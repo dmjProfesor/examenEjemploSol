@@ -179,6 +179,7 @@ function escribirPedidos(lista){
 				//eliminamos
 				listaPedidos.splice(id,1);
 				escribirPedidos(lista);
+				guardarCambios();
 			}
 			else{
 				alert("Se ha cancelado la operación");
@@ -242,6 +243,7 @@ function anyadirCarrito() {
 
 	}
 	escribirCarrito();
+	guardarCambios();
 }
 function escribirCarrito() {
 	let elemento = document.querySelector("ul");
@@ -261,6 +263,7 @@ function inicio() {
 	listaProductos.push(p2);
 	listaProductos.push(p3);
 	escribirSelect();
+	cargarPedidos();
 }
 
 function escribirSelect() {
@@ -275,3 +278,39 @@ function escribirSelect() {
 	}
 }
 
+
+//extra: guardar y cargar valores.
+
+function guardarCambios(){
+	const texto = JSON.stringify(listaPedidos);
+	localStorage.setItem("pedidos",texto);
+}
+
+
+function cargarPedidos(){
+	const texto = localStorage.getItem("pedidos");
+	//paramos si no tenemos nada
+	if(texto==null){
+		return;
+	}
+	let pasoIntermedio = JSON.parse(texto);
+	
+	pasoIntermedio.forEach(function(valor){
+		
+		
+		let carrito =[];
+		valor.carrito.forEach(function(prod){
+			let item=listaProductos.find(p=>p.nombre==prod.item.nombre);
+			let prodCarro = new productoCarro(item,prod.cantidad);
+			carrito.push(prodCarro);
+		});
+		const fecha = new Date(valor.fecha);
+		let coste = 0;
+		carrito.forEach(p=>coste+=p.obtenerTotal());
+		const ped = new pedido(carrito, valor.direc, fecha, coste, valor.id);
+		listaPedidos.push(ped);
+	});
+	//actualizamos indicadores para no pisarnos
+	ids=listaPedidos[listaPedidos.length-1].id+1;
+	
+}
