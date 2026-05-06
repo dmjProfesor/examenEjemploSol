@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ejemplo resuelto</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="formulario">
+  	<form onsubmit="return false">
+  		<label>Productos en el pedido
+  			<select required name="producto" id="nombre">
+  				<option selected value="-1" disabled>Lista de productos</option>
+  			</select>
+  		</label>
+  		<label>Cantidad<input type="number" min="0" required name="cantidad" id="uds"></label>
+  		<button id="btn1" type="submit">Añadir al carrito</button>
+  		<input type="reset">
+  	</form>
+  	<br>
+  	<form onsubmit="return false">
+  		<label>Dirección del pedido<input required type="text" name="direccion" id="direc"></label>
+  		<br>
+  		<label>Fecha de compra <input required type="date" name="fecha" id="fecha"></label>
+  	  	<br>
+  	  	<button id="btn2">Subir pedido</button> 
+  	</form>
+  	<br>
+  	<br>
+  	<h2>Carrito actual del pedido</h2>
+  	<ul>
+  		<!-- Aparecen aqui los componentes del pedido actual -->
+  	</ul>
+  	<button id="btn3">Eliminar carrito</button>
+  </div>
+
+  
+  <div class="tabla">
+  	<button  data-filtro="0" id="btn4">Ver todos</button>
+  	<button data-filtro="1" id="btn5">Premium</button>
+  	<button  data-filtro="2" id="btn6">Urgentes</button>
+  	<table>
+  		<thead>
+  			<tr>
+  				<th>Fecha</th>
+  				<th>Productos</th>
+  				<th>Coste</th>
+  				<th>Dirección</th>
+  				<th>Acciones</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+  			<!-- Aqui van los pedidos que se vayan generando -->
+  		</tbody>
+  	</table>
+  
+  </div>
+  <div class="total" id="total"></div>
+</div>
+	
+<script src="script.js"> </script>
+</body>
+</html>
