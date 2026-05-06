@@ -183,6 +183,8 @@ function escribirPedidos(lista){
 			if(valor == listaPedidos[index].escribirFecha()){
 				//eliminamos
 				listaPedidos.splice(index,1);
+				let indexVista = lista.findIndex(p=>p.id==id);
+				lista.splice(indexVista,1);
 				escribirPedidos(lista);
 				guardarCambios();
 				escribirCambios(2);
