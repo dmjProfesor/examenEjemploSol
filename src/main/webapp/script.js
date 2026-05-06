@@ -132,6 +132,8 @@ function anyadirPedido(){
 
 	vaciarCarrito();
 	escribirPedidos(listaPedidos);
+	guardarCambios();
+	escribirCambios(1);
 }
 
 function filtrar(valor){
@@ -139,9 +141,11 @@ function filtrar(valor){
 	switch (valor){
 		case "1": //premium
 			listaFiltrada=listaPedidos.filter(ped=>ped.coste>50);
+			escribirCambios(3);
 			break;
 		case "2": //urgentes
 			listaFiltrada=listaPedidos.filter(ped=>ped.calcularDiasHastaEntrega()<7 && ped.calcularDiasHastaEntrega()>0);
+			escribirCambios(3);
 			break;
 		default: //sin filtro
 			listaFiltrada=listaPedidos;
@@ -180,6 +184,7 @@ function escribirPedidos(lista){
 				listaPedidos.splice(id,1);
 				escribirPedidos(lista);
 				guardarCambios();
+				escribirCambios(2);
 			}
 			else{
 				alert("Se ha cancelado la operación");
@@ -210,6 +215,7 @@ function escribirPedidos(lista){
 function calcularTotal(lista){
 	let total = 0;
 	lista.forEach(ped=>total+=ped.coste);
+	total=Math.trunc(total*100)/100;
 	document.getElementById("total").innerHTML= "<h3>Total: "+total + "€</h3>";
 	
 }
@@ -243,7 +249,6 @@ function anyadirCarrito() {
 
 	}
 	escribirCarrito();
-	guardarCambios();
 }
 function escribirCarrito() {
 	let elemento = document.querySelector("ul");
@@ -309,8 +314,30 @@ function cargarPedidos(){
 		carrito.forEach(p=>coste+=p.obtenerTotal());
 		const ped = new pedido(carrito, valor.direc, fecha, coste, valor.id);
 		listaPedidos.push(ped);
+		// Mantenemos el contador de IDs actualizado al número más alto
+		if (valor.id >= ids) {
+			ids = valor.id + 1;
+		 }
+		 escribirCambios(1);
 	});
-	//actualizamos indicadores para no pisarnos
-	ids=listaPedidos[listaPedidos.length-1].id+1;
-	
+	escribirPedidos(listaPedidos);
+}
+
+
+function escribirCambios(opcion){
+	const cambios = document.getElementById("cambios");
+	let punto = document.createElement("li");
+	const ahora = new Date();
+	switch(opcion){ //se podrían añadir algunos más, como no están marcados en el enunciado pondremos estos de ejemplo
+		case 1:
+			punto.innerText="Agregado pedido" + "("+ahora.getHours()+":"+ahora.getMinutes()+")";
+			break;
+		case 2:
+			punto.innerText="Eliminado pedido"+ "("+ahora.getHours()+":"+ahora.getMinutes()+")";
+			break;
+		case 3:
+			punto.innerText="Filtro activado"+ "("+ahora.getHours()+":"+ahora.getMinutes()+")";
+			break;
+	}
+	cambios.appendChild(punto);
 }
