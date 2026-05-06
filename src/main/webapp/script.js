@@ -181,7 +181,8 @@ function escribirPedidos(lista){
 			let valor = prompt(texto);
 			if(valor == listaPedidos[id].escribirFecha()){
 				//eliminamos
-				listaPedidos.splice(id,1);
+				let index = listaPedidos.findIndex(p=>p.id==id);
+				listaPedidos.splice(index,1);
 				escribirPedidos(lista);
 				guardarCambios();
 				escribirCambios(2);
