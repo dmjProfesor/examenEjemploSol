@@ -175,13 +175,13 @@ function escribirPedidos(lista){
 		btnEliminar.dataset.id=ped.id;
 		btnEliminar.innerText="X";
 		btnEliminar.addEventListener("click",function(e){
-			let id = Number(e.target.dataset.id)-1; //recuerda que se genera y asigna solo, no va por posición
+			let id = e.target.dataset.id; 
+			let index = listaPedidos.findIndex(p=>p.id==id);
 			//confirmación
-			let texto="Se va a eliminar el pedido con fecha :"+listaPedidos[id].escribirFecha() +"\nIntroduzca la fecha para confirmar";
+			let texto="Se va a eliminar el pedido con fecha :"+listaPedidos[index].escribirFecha() +"\nIntroduzca la fecha para confirmar";
 			let valor = prompt(texto);
-			if(valor == listaPedidos[id].escribirFecha()){
+			if(valor == listaPedidos[index].escribirFecha()){
 				//eliminamos
-				let index = listaPedidos.findIndex(p=>p.id==id);
 				listaPedidos.splice(index,1);
 				escribirPedidos(lista);
 				guardarCambios();
@@ -196,8 +196,9 @@ function escribirPedidos(lista){
 		btnIVA.dataset.id=ped.id;
 		btnIVA.innerText="IVA";
 		btnIVA.addEventListener("click",function(e){
-			let id = Number(e.target.dataset.id)-1;
-			listaPedidos[id].cambiarIVA();
+			let id = Number(e.target.dataset.id);
+			let index = listaPedidos.findIndex(p=>p.id==id);
+			listaPedidos[index].cambiarIVA();
 			escribirPedidos(lista); 
 		});
 		celda5.appendChild(btnEliminar);
